@@ -40,6 +40,6 @@ coll = COLLECT(
     a.datas,
     strip=False,
     upx=True,
-    upx_exclude=[],
+    upx_exclude=['python312.dll'],
     name='CLASSIC',
 )
