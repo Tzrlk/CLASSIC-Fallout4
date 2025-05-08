@@ -69,17 +69,17 @@ def mock_yaml(monkeypatch: pytest.MonkeyPatch) -> MockYAML:
     """
     saved_yaml_settings = MockYAML()
 
-    def mock_yaml_settings(_yaml_store: CLASSIC_Main.YAML, key_path: str, new_value: str | None = None) -> str | int | None:
+    def mock_yaml_settings[T](_type: type[T], _yaml_store: CLASSIC_Main.YAML, key_path: str, new_value: str | None = None) -> str | int | None:
         key = key_path.rsplit(".", maxsplit=1)[-1]
         if new_value is not None:
             saved_yaml_settings[key] = new_value
             return new_value
         return saved_yaml_settings[key]
 
-    def mock_classic_settings(setting: str | None) -> str | int | bool | None:
+    def mock_classic_settings[T](_type: type[T], setting: str | None) -> str | int | bool | None:
         if setting is None:
             return None
-        return mock_yaml_settings(CLASSIC_Main.YAML.Settings, setting)
+        return mock_yaml_settings(_type, CLASSIC_Main.YAML.Settings, setting)
 
     monkeypatch.setattr(CLASSIC_Main, "yaml_settings", mock_yaml_settings)
     monkeypatch.setattr(CLASSIC_Main, "classic_settings", mock_classic_settings)
